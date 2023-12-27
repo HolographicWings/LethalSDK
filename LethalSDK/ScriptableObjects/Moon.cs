@@ -25,7 +25,11 @@ namespace LethalSDK.ScriptableObjects
         public string PlanetName = "New Moon";
         public GameObject MainPrefab;
         [TextArea(5, 15)]
+        [Tooltip("The text that displays on the ship monitor while orbiting this moon.")]
         public string PlanetDescription;
+        [TextArea(5, 20)]
+        [Tooltip("The text that displays on the terminal when you use info command on this moon.")]
+        public string PlanetLore;
         public VideoClip PlanetVideo;
         public string RiskLevel = "X";
         [Range(0,16)]
