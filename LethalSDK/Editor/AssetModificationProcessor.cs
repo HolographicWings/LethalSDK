@@ -43,9 +43,9 @@ public class AssetModificationProcessor : AssetPostprocessor
 
                 Debug.Log($"{assetPath} asset moved to {bundleName} asset bundle.");
             }
-            if(assetPath != "Assets/Mods/" + assetPath.ToLower().Replace("assets/mods/", string.Empty).RemoveNonAlphanumeric(4))
+            if(assetPath != "Assets/Mods/" + assetPath.Replace("Assets/Mods/", string.Empty).RemoveNonAlphanumeric(4))
             {
-                AssetDatabase.MoveAsset(assetPath, "Assets/Mods/" + assetPath.ToLower().Replace("assets/mods/", string.Empty).RemoveNonAlphanumeric(4));
+                AssetDatabase.MoveAsset(assetPath, "Assets/Mods/" + assetPath.Replace("Assets/Mods/", string.Empty).RemoveNonAlphanumeric(4));
             }
         }
         else
