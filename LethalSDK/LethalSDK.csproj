@@ -144,6 +144,7 @@
 del "C:\Projects\Lethal Company ReverseEnginering\Assets\Plugins\LethalSDK.dll.meta"
 xcopy /q/y/i "$(TargetPath)" "C:\Projects\LethalSDK\Assets\Plugins" /E /H /C
 del "C:\Projects\LethalSDK\Assets\Plugins\LethalSDK.dll.meta"
-xcopy /q/y/i "$(TargetPath)" "D:\Users\Holog\Documents\GitHub\LethalSDK-Unity-Project\LethalSDK_Project\Assets\Plugins" /E /H /C</PostBuildEvent>
+xcopy /q/y/i "$(TargetPath)" "D:\Users\Holog\Documents\GitHub\LethalSDK-Unity-Project\LethalSDK_Project\Assets\Plugins" /E /H /C
+xcopy /q/y/i "$(TargetPath)" "C:\Users\Holog\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\Default\BepInEx\plugins\HolographicWings-LethalExpansion" /E /H /C</PostBuildEvent>
   </PropertyGroup>
 </Project>

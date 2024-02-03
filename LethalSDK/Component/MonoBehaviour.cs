@@ -124,6 +124,7 @@ namespace LethalSDK.Component
                 NetworkObject no = prefab.GetComponent<NetworkObject>();
                 if (no != null && no.NetworkManager != null && no.NetworkManager.IsHost)
                 {
+                    instance = NetworkObject.Instantiate(prefab, this.transform.position, this.transform.rotation, this.transform.parent);
                     SI_NetworkDataInterfacing NDI = this.GetComponent<SI_NetworkDataInterfacing>();
                     if (NDI != null)
                     {
@@ -133,7 +134,7 @@ namespace LethalSDK.Component
                             case InterfaceType.Base:
                                 break;
                             case InterfaceType.Entrance:
-                                SI_EntranceTeleport ET = prefab.GetComponentInChildren<SI_EntranceTeleport>();
+                                SI_EntranceTeleport ET = instance.GetComponentInChildren<SI_EntranceTeleport>();
                                 if (ET != null)
                                 {
                                     if (data.Any(e => e._string1.ToLower() == "entranceid"))
@@ -147,8 +148,9 @@ namespace LethalSDK.Component
                                 }
                                 break;
                         }
+                        SI_NetworkDataInterfacing pNDI = prefab.AddComponent<SI_NetworkDataInterfacing>();
+                        pNDI.setData(NDI.getData());
                     }
-                    instance = NetworkObject.Instantiate(prefab, this.transform.position, this.transform.rotation, this.transform.parent);
                     instance.GetComponent<NetworkObject>().Spawn();
                 }
             }
@@ -186,6 +188,16 @@ namespace LethalSDK.Component
         public virtual StringStringPair[] getData()
         {
             return serializedData.Split(';').Select(s => s.Split(',')).Where(split => split.Length == 2).Select(split => new StringStringPair(split[0], split[1])).ToArray();
+        }
+        public virtual void setData(string datastring)
+        {
+            data = datastring.Split(';').Select(s => s.Split(',')).Where(split => split.Length == 2).Select(split => new StringStringPair(split[0], split[1])).ToArray();
+            serializedData = string.Join(";", data.Select(p => $"{p._string1},{p._string2}"));
+        }
+        public virtual void setData(StringStringPair[] dataarray)
+        {
+            data = dataarray;
+            serializedData = string.Join(";", data.Select(p => $"{p._string1},{p._string2}"));
         }
     }
 }
