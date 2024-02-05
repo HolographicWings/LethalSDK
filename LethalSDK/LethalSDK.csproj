@@ -133,6 +133,7 @@
     <Compile Include="ScriptableObjects\Moon.cs" />
     <Compile Include="ScriptableObjects\Scrap.cs" />
     <Compile Include="Utils\CurveContainer.cs" />
+    <Compile Include="Utils\NetworkDataManager.cs" />
     <Compile Include="Utils\Pairs.cs" />
     <Compile Include="Utils\SpawnPrefab.cs" />
     <Compile Include="Utils\TypeExtensions.cs" />

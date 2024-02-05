@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine;
 using Unity.Netcode;
 using LethalSDK.Utils;
+using System.Text.RegularExpressions;
 
 namespace LethalSDK.Component
 {
@@ -116,42 +117,33 @@ namespace LethalSDK.Component
         public GameObject prefab;
         [HideInInspector]
         public GameObject instance;
-        public InterfaceType interfaceType = InterfaceType.None;
         public void Awake()
         {
             if (prefab != null)
             {
                 NetworkObject no = prefab.GetComponent<NetworkObject>();
-                if (no != null && no.NetworkManager != null && no.NetworkManager.IsHost)
+                if (no != null && no.NetworkManager != null)
                 {
-                    instance = NetworkObject.Instantiate(prefab, this.transform.position, this.transform.rotation, this.transform.parent);
                     SI_NetworkDataInterfacing NDI = this.GetComponent<SI_NetworkDataInterfacing>();
+                    SI_NetworkData pNDI = null;
                     if (NDI != null)
                     {
-                        StringStringPair[] data = NDI.getData();
-                        switch (interfaceType)
+                        pNDI = prefab.GetComponent<SI_NetworkData>();
+                        if (pNDI == null)
                         {
-                            case InterfaceType.Base:
-                                break;
-                            case InterfaceType.Entrance:
-                                SI_EntranceTeleport ET = instance.GetComponentInChildren<SI_EntranceTeleport>();
-                                if (ET != null)
-                                {
-                                    if (data.Any(e => e._string1.ToLower() == "entranceid"))
-                                    {
-                                        int.TryParse(data.First(e => e._string1.ToLower() == "entranceid")._string2, out ET.EntranceID);
-                                    }
-                                    if(data.Any(e => e._string1.ToLower() == "audioreverbpreset"))
-                                    {
-                                        int.TryParse(data.First(e => e._string1.ToLower() == "audioreverbpreset")._string2, out ET.AudioReverbPreset);
-                                    }
-                                }
-                                break;
+                            prefab.AddComponent<SI_NetworkData>();
                         }
-                        SI_NetworkDataInterfacing pNDI = prefab.AddComponent<SI_NetworkDataInterfacing>();
-                        pNDI.setData(NDI.getData());
                     }
-                    instance.GetComponent<NetworkObject>().Spawn();
+                    if (no.NetworkManager.IsHost)
+                    {
+                        instance = NetworkObject.Instantiate(prefab, this.transform.position, this.transform.rotation, this.transform.parent);
+                        SI_NetworkData temppNDI = instance.GetComponent<SI_NetworkData>();
+                        if (NDI != null && temppNDI != null)
+                        {
+                            temppNDI.setData(NDI.getData());
+                        }
+                        instance.GetComponent<NetworkObject>().Spawn();
+                    }
                 }
             }
             this.gameObject.SetActive(false);
@@ -169,35 +161,19 @@ namespace LethalSDK.Component
             }
         }
     }
-    public enum InterfaceType
-    {
-        None = 0,
-        Base = 1,
-        Entrance = 2,
-    }
     [AddComponentMenu("LethalSDK/NetworkDataInterfacing")]
     public class SI_NetworkDataInterfacing : MonoBehaviour
     {
-        public StringStringPair[] data;
+        public StringStringPair[] data = new StringStringPair[0];
         [HideInInspector]
-        public string serializedData;
+        public string serializedData = string.Empty;
         private void OnValidate()
         {
-            serializedData = string.Join(";", data.Select(p => $"{p._string1},{p._string2}"));
+            serializedData = string.Join(";", data.Select(p => $"{p._string1.RemoveNonAlphanumeric(1)},{p._string2.RemoveNonAlphanumeric(1)}"));
         }
         public virtual StringStringPair[] getData()
         {
             return serializedData.Split(';').Select(s => s.Split(',')).Where(split => split.Length == 2).Select(split => new StringStringPair(split[0], split[1])).ToArray();
-        }
-        public virtual void setData(string datastring)
-        {
-            data = datastring.Split(';').Select(s => s.Split(',')).Where(split => split.Length == 2).Select(split => new StringStringPair(split[0], split[1])).ToArray();
-            serializedData = string.Join(";", data.Select(p => $"{p._string1},{p._string2}"));
-        }
-        public virtual void setData(StringStringPair[] dataarray)
-        {
-            data = dataarray;
-            serializedData = string.Join(";", data.Select(p => $"{p._string1},{p._string2}"));
         }
     }
 }
