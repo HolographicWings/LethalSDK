@@ -136,6 +136,7 @@
     <Compile Include="Utils\NetworkDataManager.cs" />
     <Compile Include="Utils\Pairs.cs" />
     <Compile Include="Utils\SpawnPrefab.cs" />
+    <Compile Include="Editor\TerrainChecker.cs" />
     <Compile Include="Utils\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup />

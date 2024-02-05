@@ -1,5 +1,6 @@
 ﻿using LethalSDK.Component;
 using LethalSDK.ScriptableObjects;
+using LethalSDK.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace LethalSDK.Editor
 {
@@ -347,6 +349,48 @@ namespace LethalSDK.Editor
             EditorGUILayout.HelpBox("Ladder is experimental.", MessageType.Info);
 
             base.OnInspectorGUI();
+        }
+    }
+    [InitializeOnLoad]
+    [CustomEditor(typeof(TerrainChecker))]
+    public class TerrainCheckerEditor : EditorChecker
+    {
+        static TerrainCheckerEditor()
+        {
+            Selection.selectionChanged += OnSelectionChanged;
+        }
+
+        static void OnSelectionChanged()
+        {
+            if (Selection.activeGameObject && Selection.activeGameObject.GetComponent<Terrain>())
+            {
+                Terrain terrain = Selection.activeGameObject.GetComponent<Terrain>();
+                if (!terrain.gameObject.GetComponent<TerrainChecker>())
+                {
+                    terrain.gameObject.AddComponent<TerrainChecker>();
+                }
+            }
+        }
+        public override void OnInspectorGUI()
+        {
+            TerrainChecker t = (TerrainChecker)target;
+
+            if (t.terrain != null)
+            {
+                int decalLayerMask = 1 << 10;
+                if ((t.terrain.renderingLayerMask & decalLayerMask) == 0)
+                {
+                    EditorGUILayout.HelpBox("Quicksand will not show on this terrain, to fix you must enable the '10: Decal Layer 2' in Terrain Settings > Rendering Layer Mask.", MessageType.Warning);
+                }
+                if (t.terrain.materialTemplate != null && t.terrain.materialTemplate.shader.name != "HDRP/UpdatedTerrainLit")
+                {
+                    EditorGUILayout.HelpBox("To use Terrain Holes, you must change the material of the terrain with another one that use the HDRP/UpdatedTerrainLit shader in Terrain Settings > Basic Terrain > Material.", MessageType.Info);
+                }
+                if (t.terrain.drawInstanced == false)
+                {
+                    EditorGUILayout.HelpBox("For performances with a lot of trees, grass and other details, it's recommended to enable Terrain Settings > Basic Terrain > Draw Instanced.", MessageType.Info);
+                }
+            }
         }
     }
 }
