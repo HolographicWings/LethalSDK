@@ -135,7 +135,7 @@ public class AssetBundleVariantAssigner
 
         if (!Directory.Exists(folderPath))
         {
-            Debug.LogError("Le dossier n'existe pas : " + folderPath);
+            Debug.LogError("The folder doesn't exist : " + folderPath);
             return;
         }
 
@@ -161,7 +161,7 @@ public class AssetBundleVariantAssigner
                 {
                     File.Delete(manifestMetaFile);
                 }
-                Debug.Log("Fichier supprimé : " + file);
+                Debug.Log("File deleted : " + file);
             }
         }
 
