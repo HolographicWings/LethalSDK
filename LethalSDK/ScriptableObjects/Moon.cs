@@ -26,6 +26,8 @@ namespace LethalSDK.ScriptableObjects
         public GameObject MainPrefab;
         [TextArea(5, 15)]
         public string PlanetDescription;
+        [TextArea(5, 15)]
+        public string PlanetLore;
         public VideoClip PlanetVideo;
         public string RiskLevel = "X";
         [Range(0,16)]
