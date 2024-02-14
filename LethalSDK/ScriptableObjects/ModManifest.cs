@@ -9,7 +9,7 @@ namespace LethalSDK.ScriptableObjects
     [CreateAssetMenu(fileName = "ModManifest", menuName = "LethalSDK/Mod Manifest")]
     public class ModManifest : ScriptableObject
     {
-        public string modName = "New Mod";
+        public string modName = "NewMod";
         [Space]
         [SerializeField]
         private SerializableVersion version = new SerializableVersion(0, 0, 0, 0);

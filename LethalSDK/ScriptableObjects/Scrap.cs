@@ -16,7 +16,7 @@ namespace LethalSDK.ScriptableObjects
         public string[] IncompatibleBundles;
         [Header("Base")]
         public ScrapType scrapType = ScrapType.Normal;
-        public string itemName = string.Empty;
+        public string itemName = "NewScrap";
         public int minValue = 0;
         public int maxValue = 0;
         public bool twoHanded = false;
