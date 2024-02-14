@@ -53,7 +53,7 @@ namespace LethalSDK.ScriptableObjects
             new ScrapSpawnChancePerScene("8 Titan", 10),
             new ScrapSpawnChancePerScene("Others", 10)
         };
-        public string[] playetSpawnBlacklist = new string[0];
+        public string[] planetSpawnBlacklist = new string[0];
         [Header("Shovel")]
         public int shovelHitForce = 1;
         public AudioSource shovelAudio;
