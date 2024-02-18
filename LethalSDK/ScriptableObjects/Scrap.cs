@@ -25,6 +25,7 @@ namespace LethalSDK.ScriptableObjects
         public bool isConductiveMetal = false;
         public int weight = 0;
         public GameObject prefab;
+        public float useCooldown = 0f;
         [Header("Sounds")]
         public string grabSFX = string.Empty;
         public string dropSFX = string.Empty;
