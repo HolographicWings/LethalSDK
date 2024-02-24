@@ -272,7 +272,11 @@ namespace LethalSDK.Editor
                         EditorGUILayout.HelpBox($"The NetworkObject of the Prefab have incorrect settings: {errorMessage}", MessageType.Warning);
                     }
                 }
-                if(t.prefab.transform.Find("ScanNode") == null)
+                if (t.prefab.GetComponent<MeshFilter>() == null)
+                {
+                    EditorGUILayout.HelpBox("The Prefab don't have a MeshFilter.", MessageType.Error);
+                }
+                if (t.prefab.transform.Find("ScanNode") == null)
                 {
                     EditorGUILayout.HelpBox("The Prefab don't have a ScanNode.", MessageType.Warning);
                 }
