@@ -220,6 +220,8 @@ namespace LethalSDK.Component
         public Transform EntrancePoint;
         public int AudioReverbPreset = 2;
         public AudioClip[] DoorAudios = new AudioClip[0];
+        [Header("Stinger")]
+        public AudioClip FirstTimeAudio;
 
         public override void Awake()
         {
@@ -234,6 +236,7 @@ namespace LethalSDK.Component
             entranceTeleport.audioReverbPreset = AudioReverbPreset;
             entranceTeleport.entrancePointAudio = audioSource;
             entranceTeleport.doorAudios = DoorAudios;
+            entranceTeleport.firstTimeAudio = FirstTimeAudio;
             InteractTrigger trigger = this.gameObject.AddComponent<InteractTrigger>();
             trigger.hoverIcon = AssetGatherDialog.sprites.ContainsKey("HandIcon") ? AssetGatherDialog.sprites["HandIcon"] : AssetGatherDialog.sprites.First().Value;
             trigger.hoverTip = "Enter : [LMB]";
